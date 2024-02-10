@@ -25239,16 +25239,17 @@ const run = (callback) => {
 
   // prepare log file
   fs.writeFileSync("openvpn.log", "");
-  const tail = new Tail("openvpn.log");
+  // const tail = new Tail("openvpn.log");
 
   try {
-    exec(`sudo nohup openvpn --config ${configFile} --daemon --log openvpn.log --writepid openvpn.pid`);
+    exec(`sudo openvpn --config ${configFile} --daemon --log openvpn.log --writepid openvpn.pid`);
   } catch (error) {
     core.error(fs.readFileSync("openvpn.log", "utf8"));
-    tail.unwatch();
+    // tail.unwatch();
     throw error;
   }
 
+  /*
   tail.on("line", (data) => {
     core.info(data);
     if (data.includes("Initialization Sequence Completed")) {
@@ -25264,6 +25265,7 @@ const run = (callback) => {
     core.setFailed("VPN connection failed.");
     tail.unwatch();
   }, 15000);
+   */
 };
 
 module.exports = run;
